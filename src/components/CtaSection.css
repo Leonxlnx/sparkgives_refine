@@ -1,0 +1,62 @@
+.cta-section {
+    position: relative;
+    padding: var(--space-5xl) var(--space-xl);
+    background: var(--color-surface-dark);
+    text-align: center;
+    overflow: hidden;
+}
+
+.cta-section-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            rgba(40, 40, 40, 1) 0%,
+            rgba(26, 26, 26, 1) 100%);
+    z-index: 0;
+}
+
+.cta-section-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cta-section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    color: var(--color-text-on-dark);
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+}
+
+.cta-section-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-on-dark-muted);
+    margin-bottom: var(--space-xl);
+}
+
+.cta-section-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md) var(--space-2xl);
+    background: var(--color-primary);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: var(--radius-full);
+    box-shadow: 0 8px 30px rgba(212, 103, 28, 0.3);
+    transition: box-shadow var(--transition-fast);
+}
+
+.cta-section-button:hover {
+    box-shadow: 0 12px 40px rgba(212, 103, 28, 0.4);
+}
+
+@media (max-width: 600px) {
+    .cta-section {
+        padding: var(--space-4xl) var(--space-md);
+    }
+}

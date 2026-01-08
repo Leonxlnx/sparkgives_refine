@@ -1,0 +1,102 @@
+.challenge {
+    margin: 0 var(--space-xl) var(--space-4xl);
+    background: var(--color-background-alt);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+}
+
+.challenge-container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-2xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+}
+
+.challenge-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.challenge-text {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+}
+
+.challenge-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+}
+
+.avatar-stack {
+    display: flex;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    border: 2px solid var(--color-background-alt);
+    margin-left: -12px;
+}
+
+.avatar:first-child {
+    margin-left: 0;
+}
+
+.rank-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: var(--space-lg);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.rank-percent {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.rank-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 768px) {
+    .challenge {
+        margin: 0 var(--space-md) var(--space-3xl);
+    }
+
+    .challenge-container {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--space-xl);
+    }
+
+    .challenge-stats {
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+
+    .rank-badge {
+        border-left: none;
+        padding-left: 0;
+        align-items: center;
+    }
+}
