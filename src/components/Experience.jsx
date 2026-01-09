@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Experience.css';
 
 const features = [
@@ -8,11 +8,7 @@ const features = [
         icon: '⊕',
         title: 'The Daily Ritual',
         category: 'MENTAL FITNESS',
-        items: [
-            '2-minute daily ritual',
-            'Learn something meaningful',
-            'Start your day with intention'
-        ],
+        items: ['2-minute daily ritual', 'Learn something meaningful', 'Start your day with intention'],
         cta: 'WARM-UP STATION',
         color: '#1a5fb4'
     },
@@ -20,11 +16,7 @@ const features = [
         icon: '☆',
         title: 'Impact Streaks',
         category: 'STRENGTH TRAINING',
-        items: [
-            'Consistency compounds',
-            'Track daily & weekly progress',
-            'Visible status & badges'
-        ],
+        items: ['Consistency compounds', 'Track daily & weekly progress', 'Visible status & badges'],
         cta: 'CORE LOOP',
         color: '#444444'
     },
@@ -32,46 +24,68 @@ const features = [
         icon: '⚡',
         title: 'Tribal Belonging',
         category: 'GROUP CLASS',
-        items: [
-            'See what friends support',
-            'Leaderboards & ranks',
-            'Shared progress, thoughtfully surfaced'
-        ],
+        items: ['See what friends support', 'Leaderboards & ranks', 'Shared progress, thoughtfully surfaced'],
         cta: 'COMMUNITY ZONE',
         color: '#1a1a1a'
     }
 ];
 
 export default function Experience() {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    const containerRef = useRef(null);
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.2 }
-        }
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Stagger Cards Reveal
+            gsap.from(".feature-card", {
+                y: 100,
+                opacity: 0,
+                stagger: 0.15,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".feature-cards",
+                    start: "top 80%"
+                }
+            });
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
+    const handleMouseMove = (e) => {
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg tilt
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        gsap.to(card, {
+            rotateX: rotateX,
+            rotateY: rotateY,
+            duration: 0.5,
+            ease: "power2.out"
+        });
     };
 
-    const cardVariants = {
-        hidden: { opacity: 0, y: 40 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
-        }
+    const handleMouseLeave = (e) => {
+        gsap.to(e.currentTarget, {
+            rotateX: 0,
+            rotateY: 0,
+            duration: 0.5,
+            ease: "power2.out"
+        });
     };
 
     return (
-        <section className="experience" ref={ref}>
+        <section className="experience" ref={containerRef}>
+            <div className="grain-overlay" />
             <div className="experience-container">
-                <motion.div
-                    className="experience-header"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                >
+                <div className="experience-header">
                     <span className="section-label">THE EXPERIENCE</span>
                     <h2 className="experience-title">
                         A Gym for Your <span className="accent-italic">Soul</span>
@@ -79,20 +93,15 @@ export default function Experience() {
                     <p className="experience-subtitle">
                         Ritual, curation, and consistency—combined into a daily practice for your moral identity.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className="feature-cards"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                >
+                <div className="feature-cards">
                     {features.map((feature, index) => (
-                        <motion.div
+                        <div
                             key={index}
                             className="feature-card"
-                            variants={cardVariants}
-                            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
                         >
                             <div className="card-icon">{feature.icon}</div>
                             <h3 className="card-title">{feature.title}</h3>
@@ -105,17 +114,15 @@ export default function Experience() {
                                     </li>
                                 ))}
                             </ul>
-                            <motion.div
+                            <div
                                 className="card-cta"
                                 style={{ backgroundColor: feature.color }}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
                             >
                                 {feature.cta}
-                            </motion.div>
-                        </motion.div>
+                            </div>
+                        </div>
                     ))}
-                </motion.div>
+                </div>
             </div>
         </section>
     );
