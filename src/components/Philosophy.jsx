@@ -1,57 +1,25 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SplitType from 'split-type';
 import './Philosophy.css';
 
 export default function Philosophy() {
     const containerRef = useRef(null);
-    const visualRef = useRef(null);
-    const contentRef = useRef(null);
-    const titleRef = useRef(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Pin Visual
-            ScrollTrigger.create({
-                trigger: containerRef.current,
-                start: "top center",
-                end: "bottom center",
-                animation: gsap.from(visualRef.current, {
-                    y: 100,
-                    opacity: 0,
-                    duration: 1,
-                    ease: "power3.out"
-                })
-            });
-
-            // Text Reveal
-            const text = new SplitType(titleRef.current, { types: 'words' });
-            gsap.from(text.words, {
-                opacity: 0.1,
-                stagger: 0.05,
-                duration: 0.5,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: titleRef.current,
-                    start: "top 80%",
-                    end: "bottom 50%",
-                    scrub: true
-                }
-            });
-
-            // Stagger items
-            gsap.from(".philosophy-features li", {
+            // Stagger reveal all bento cells
+            gsap.from(".bento-cell", {
+                y: 60,
                 opacity: 0,
-                x: -20,
                 stagger: 0.1,
                 duration: 0.8,
+                ease: "power3.out",
                 scrollTrigger: {
-                    trigger: ".philosophy-features",
-                    start: "top 85%"
+                    trigger: containerRef.current,
+                    start: "top 75%"
                 }
             });
-
         }, containerRef);
 
         return () => ctx.revert();
@@ -59,25 +27,35 @@ export default function Philosophy() {
 
     return (
         <section className="philosophy" ref={containerRef}>
-            <div className="philosophy-container">
-                <div className="philosophy-content" ref={contentRef}>
+            <div className="bento-grid">
+                {/* Main Title Cell */}
+                <div className="bento-cell cell-main">
                     <span className="section-label">THE PHILOSOPHY</span>
-
-                    <h2 className="philosophy-title" ref={titleRef}>
-                        Luxury isn't about price. It's about <span className="accent-italic">values</span>.
+                    <h2 className="philosophy-title">
+                        Luxury isn't about price.<br />
+                        It's about <span className="accent-italic">values</span>.
                     </h2>
-
                     <p className="philosophy-text">
                         We curate a small, evolving set of high-impact causes—selected for clarity,
-                        impact, and trust. Each one is turned into a story worth your attention.
+                        impact, and trust.
                     </p>
+                </div>
 
-                    <p className="philosophy-text emphasis">
-                        Just as you curate your diet, your wardrobe, and your media—Spark helps you
-                        curate your impact. It's not just a donation platform; it's an identity layer for your
-                        values.
-                    </p>
+                {/* Tastemaker Image Cell */}
+                <div className="bento-cell cell-tastemaker">
+                    <img src="/tastemaker.png" alt="The Tastemaker" loading="lazy" />
+                    <div className="cell-overlay" />
+                    <span className="cell-label">"The Tastemakers"</span>
+                </div>
 
+                {/* Abstract Glass Cell */}
+                <div className="bento-cell cell-glass">
+                    <img src="/amber-glass.png" alt="Abstract Art" loading="lazy" />
+                    <div className="cell-overlay" />
+                </div>
+
+                {/* Features Cell */}
+                <div className="bento-cell cell-features">
                     <ul className="philosophy-features">
                         <li><span className="check-icon">◎</span> Verified high-impact causes</li>
                         <li><span className="check-icon">◎</span> Story-driven engagement</li>
@@ -85,27 +63,21 @@ export default function Philosophy() {
                     </ul>
                 </div>
 
-                <div className="philosophy-visual-wrapper">
-                    <div className="philosophy-visual" ref={visualRef}>
-                        <img src="/tastemaker.png" alt="The Tastemaker" className="visual-image" />
-                        <div className="visual-overlay" />
-
-                        <div className="visual-card-content">
-                            <span className="visual-label">"The Tastemakers"</span>
-                        </div>
-
-                        <div className="curated-badge">
-                            <span className="badge-title">Curated Impact</span>
-                            <span className="badge-subtitle">TOP 1% SELECTION</span>
-                            <div className="badge-lines">
-                                <div className="badge-line" />
-                                <div className="badge-line" />
-                                <div className="badge-line" />
-                                <div className="badge-line" />
-                                <div className="badge-line" />
-                            </div>
-                        </div>
+                {/* Quote Cell */}
+                <div className="bento-cell cell-quote">
+                    <blockquote>
+                        "Curate your impact like you curate your identity."
+                    </blockquote>
+                    <div className="curated-badge">
+                        <span className="badge-title">Curated Impact</span>
+                        <span className="badge-subtitle">TOP 1% SELECTION</span>
                     </div>
+                </div>
+
+                {/* Community Hands Cell */}
+                <div className="bento-cell cell-community">
+                    <img src="/community.png" alt="Community" loading="lazy" />
+                    <div className="cell-overlay" />
                 </div>
             </div>
         </section>
