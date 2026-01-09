@@ -8,15 +8,45 @@ export default function Experience() {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
+            // Cinematic stagger reveal
             gsap.from(".exp-cell", {
-                y: 80,
+                y: 120,
                 opacity: 0,
-                stagger: 0.12,
-                duration: 0.9,
+                scale: 0.85,
+                rotateY: 15,
+                stagger: 0.15,
+                duration: 1.4,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: ".exp-bento",
+                    start: "top 75%"
+                }
+            });
+
+            // Parallax on images
+            gsap.utils.toArray(".exp-parallax").forEach(img => {
+                gsap.to(img, {
+                    yPercent: -25,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: img,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1.5
+                    }
+                });
+            });
+
+            // Streak bars animation
+            gsap.from(".bar", {
+                scaleY: 0,
+                transformOrigin: "bottom",
+                stagger: 0.08,
+                duration: 0.8,
                 ease: "power3.out",
                 scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top 70%"
+                    trigger: ".streak-bars",
+                    start: "top 85%"
                 }
             });
         }, containerRef);
@@ -31,8 +61,8 @@ export default function Experience() {
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -6;
-        const rotateY = ((x - centerX) / centerX) * 6;
+        const rotateX = ((y - centerY) / centerY) * -8;
+        const rotateY = ((x - centerX) / centerX) * 8;
 
         gsap.to(card, {
             rotateX, rotateY,
@@ -44,8 +74,8 @@ export default function Experience() {
     const handleTiltReset = (e) => {
         gsap.to(e.currentTarget, {
             rotateX: 0, rotateY: 0,
-            duration: 0.4,
-            ease: "power2.out"
+            duration: 0.6,
+            ease: "elastic.out(1, 0.5)"
         });
     };
 
@@ -60,11 +90,7 @@ export default function Experience() {
 
             <div className="exp-bento">
                 {/* Main Feature Card */}
-                <div
-                    className="exp-cell cell-ritual"
-                    onMouseMove={handleTilt}
-                    onMouseLeave={handleTiltReset}
-                >
+                <div className="exp-cell cell-ritual" onMouseMove={handleTilt} onMouseLeave={handleTiltReset}>
                     <div className="cell-icon">⊕</div>
                     <h3>The Daily Ritual</h3>
                     <span className="cell-tag">MENTAL FITNESS</span>
@@ -76,21 +102,24 @@ export default function Experience() {
                     <div className="cell-cta">WARM-UP STATION</div>
                 </div>
 
-                {/* Impact Visual */}
-                <div className="exp-cell cell-impact-visual">
-                    <img src="/impact.png" alt="Impact" loading="lazy" />
+                {/* Spark Particles Visual */}
+                <div className="exp-cell cell-spark">
+                    <img src="/spark-particles.png" alt="Spark" className="exp-parallax" loading="lazy" />
+                    <div className="cell-overlay gradient-fire" />
+                    <span className="cell-badge fire">SPARK</span>
+                </div>
+
+                {/* Abstract Flow Visual */}
+                <div className="exp-cell cell-abstract">
+                    <img src="/abstract-flow.png" alt="Flow" className="exp-parallax" loading="lazy" />
                     <div className="cell-overlay" />
                 </div>
 
                 {/* Streaks Card */}
-                <div
-                    className="exp-cell cell-streaks"
-                    onMouseMove={handleTilt}
-                    onMouseLeave={handleTiltReset}
-                >
+                <div className="exp-cell cell-streaks" onMouseMove={handleTilt} onMouseLeave={handleTiltReset}>
                     <div className="cell-icon">☆</div>
                     <h3>Impact Streaks</h3>
-                    <span className="cell-tag">STRENGTH TRAINING</span>
+                    <span className="cell-tag purple">STRENGTH TRAINING</span>
                     <div className="streak-bars">
                         <div className="bar" style={{ height: '40%' }} />
                         <div className="bar" style={{ height: '60%' }} />
@@ -98,33 +127,29 @@ export default function Experience() {
                         <div className="bar active" style={{ height: '100%' }} />
                         <div className="bar" style={{ height: '70%' }} />
                         <div className="bar" style={{ height: '90%' }} />
-                        <div className="bar" style={{ height: '50%' }} />
+                        <div className="bar" style={{ height: '55%' }} />
                     </div>
                     <div className="cell-cta dark">CORE LOOP</div>
                 </div>
 
-                {/* Community Visual */}
-                <div className="exp-cell cell-community-visual">
-                    <img src="/community.png" alt="Community" loading="lazy" />
-                    <div className="cell-overlay" />
-                    <span className="cell-label">Shared Progress</span>
-                </div>
-
                 {/* Tribal Card */}
-                <div
-                    className="exp-cell cell-tribal"
-                    onMouseMove={handleTilt}
-                    onMouseLeave={handleTiltReset}
-                >
-                    <div className="cell-icon">⚡</div>
+                <div className="exp-cell cell-tribal" onMouseMove={handleTilt} onMouseLeave={handleTiltReset}>
+                    <div className="cell-icon light">⚡</div>
                     <h3>Tribal Belonging</h3>
-                    <span className="cell-tag">GROUP CLASS</span>
+                    <span className="cell-tag teal">GROUP CLASS</span>
                     <ul>
                         <li>See what friends support</li>
                         <li>Leaderboards & ranks</li>
                         <li>Thoughtful social surfacing</li>
                     </ul>
-                    <div className="cell-cta dark">COMMUNITY ZONE</div>
+                    <div className="cell-cta gradient">COMMUNITY ZONE</div>
+                </div>
+
+                {/* Nature Visual */}
+                <div className="exp-cell cell-nature-exp">
+                    <img src="/nature-glow.png" alt="Nature" className="exp-parallax" loading="lazy" />
+                    <div className="cell-overlay gradient-teal" />
+                    <span className="cell-badge teal">GROWTH</span>
                 </div>
             </div>
         </section>

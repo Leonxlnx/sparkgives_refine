@@ -3,33 +3,39 @@
     background: var(--color-background);
 }
 
-/* Bento Grid */
+/* Bento Grid - More Rounded */
 .bento-grid {
     max-width: var(--container-max);
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto auto;
-    gap: var(--space-md);
+    gap: var(--space-lg);
 }
 
 .bento-cell {
     position: relative;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-2xl);
     overflow: hidden;
     background: var(--color-surface);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.bento-cell:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: var(--shadow-xl);
 }
 
 .bento-cell img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .bento-cell:hover img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .cell-overlay {
@@ -39,15 +45,30 @@
     pointer-events: none;
 }
 
-.cell-label {
+.gradient-sunset {
+    background: linear-gradient(135deg, rgba(212, 103, 28, 0.3) 0%, rgba(236, 72, 153, 0.2) 50%, transparent 100%);
+}
+
+.gradient-teal {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.3) 0%, rgba(139, 92, 246, 0.2) 100%);
+}
+
+.cell-badge {
     position: absolute;
-    bottom: var(--space-lg);
+    top: var(--space-lg);
     left: var(--space-lg);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.25rem;
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(212, 103, 28, 0.9);
     color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-radius: var(--radius-full);
     z-index: 2;
+}
+
+.cell-badge.teal {
+    background: rgba(20, 184, 166, 0.9);
 }
 
 /* Cell: Main Title */
@@ -58,15 +79,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: linear-gradient(135deg, var(--color-surface) 0%, #f8f5f0 100%);
-}
-
-.section-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: var(--color-primary);
-    margin-bottom: var(--space-md);
+    background: linear-gradient(145deg, #fff 0%, #fdfbf8 100%);
 }
 
 .philosophy-title {
@@ -82,21 +95,21 @@
     font-size: 1rem;
     line-height: 1.7;
     color: var(--color-text-secondary);
-    max-width: 400px;
+    max-width: 380px;
 }
 
-/* Cell: Tastemaker */
-.cell-tastemaker {
+/* Cell: Sunset */
+.cell-sunset {
     grid-column: span 2;
-    grid-row: span 2;
-    min-height: 400px;
+    grid-row: span 1;
+    min-height: 280px;
 }
 
-/* Cell: Glass */
-.cell-glass {
-    grid-column: span 2;
+/* Cell: Flow */
+.cell-flow {
+    grid-column: span 1;
+    grid-row: span 1;
     min-height: 200px;
-    background: #1a1a1a;
 }
 
 /* Cell: Features */
@@ -127,11 +140,17 @@
     font-size: 0.8rem;
 }
 
+/* Cell: Nature */
+.cell-nature {
+    grid-column: span 2;
+    min-height: 220px;
+}
+
 /* Cell: Quote */
 .cell-quote {
-    grid-column: span 1;
-    padding: var(--space-xl);
-    background: var(--color-surface-dark);
+    grid-column: span 2;
+    padding: var(--space-2xl);
+    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
     color: var(--color-text-on-dark);
     display: flex;
     flex-direction: column;
@@ -141,20 +160,20 @@
 .cell-quote blockquote {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     line-height: 1.5;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 .curated-badge {
-    margin-top: var(--space-lg);
+    margin-top: var(--space-xl);
 }
 
 .badge-title {
     display: block;
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-bottom: var(--space-xs);
 }
 
@@ -162,13 +181,7 @@
     font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.1em;
-    color: var(--color-primary);
-}
-
-/* Cell: Community */
-.cell-community {
-    grid-column: span 2;
-    min-height: 200px;
+    color: var(--color-primary-light);
 }
 
 /* Responsive */
@@ -178,14 +191,14 @@
     }
 
     .cell-main,
-    .cell-tastemaker,
-    .cell-glass,
-    .cell-community {
+    .cell-sunset,
+    .cell-nature,
+    .cell-quote {
         grid-column: span 2;
     }
 
-    .cell-features,
-    .cell-quote {
+    .cell-flow,
+    .cell-features {
         grid-column: span 1;
     }
 }
@@ -193,20 +206,20 @@
 @media (max-width: 600px) {
     .bento-grid {
         grid-template-columns: 1fr;
+        gap: var(--space-md);
     }
 
     .cell-main,
-    .cell-tastemaker,
-    .cell-glass,
+    .cell-sunset,
+    .cell-flow,
     .cell-features,
-    .cell-quote,
-    .cell-community {
+    .cell-nature,
+    .cell-quote {
         grid-column: span 1;
     }
 
-    .cell-tastemaker,
-    .cell-glass,
-    .cell-community {
-        min-height: 250px;
+    .cell-sunset,
+    .cell-nature {
+        min-height: 220px;
     }
 }

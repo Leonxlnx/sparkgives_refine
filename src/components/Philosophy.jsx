@@ -8,15 +8,42 @@ export default function Philosophy() {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Stagger reveal all bento cells
+            // Cinematic stagger reveal with scale and rotation
             gsap.from(".bento-cell", {
-                y: 60,
+                y: 100,
                 opacity: 0,
-                stagger: 0.1,
-                duration: 0.8,
-                ease: "power3.out",
+                scale: 0.9,
+                rotateX: 10,
+                stagger: 0.12,
+                duration: 1.2,
+                ease: "power4.out",
                 scrollTrigger: {
                     trigger: containerRef.current,
+                    start: "top 80%"
+                }
+            });
+
+            // Parallax on images
+            gsap.utils.toArray(".parallax-img").forEach(img => {
+                gsap.to(img, {
+                    yPercent: -20,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: img,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 1
+                    }
+                });
+            });
+
+            // Text reveal on scroll
+            gsap.from(".philosophy-title", {
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: ".cell-main",
                     start: "top 75%"
                 }
             });
@@ -36,21 +63,20 @@ export default function Philosophy() {
                         It's about <span className="accent-italic">values</span>.
                     </h2>
                     <p className="philosophy-text">
-                        We curate a small, evolving set of high-impact causes—selected for clarity,
-                        impact, and trust.
+                        We curate high-impact causes—selected for clarity, impact, and trust.
                     </p>
                 </div>
 
-                {/* Tastemaker Image Cell */}
-                <div className="bento-cell cell-tastemaker">
-                    <img src="/tastemaker.png" alt="The Tastemaker" loading="lazy" />
-                    <div className="cell-overlay" />
-                    <span className="cell-label">"The Tastemakers"</span>
+                {/* Cinematic Sunset Cell */}
+                <div className="bento-cell cell-sunset">
+                    <img src="/sunset-hands.png" alt="Community" className="parallax-img" loading="lazy" />
+                    <div className="cell-overlay gradient-sunset" />
+                    <span className="cell-badge">COMMUNITY</span>
                 </div>
 
-                {/* Abstract Glass Cell */}
-                <div className="bento-cell cell-glass">
-                    <img src="/amber-glass.png" alt="Abstract Art" loading="lazy" />
+                {/* Abstract Flow Cell */}
+                <div className="bento-cell cell-flow">
+                    <img src="/abstract-flow.png" alt="Flow" className="parallax-img" loading="lazy" />
                     <div className="cell-overlay" />
                 </div>
 
@@ -63,6 +89,13 @@ export default function Philosophy() {
                     </ul>
                 </div>
 
+                {/* Nature Glow Cell */}
+                <div className="bento-cell cell-nature">
+                    <img src="/nature-glow.png" alt="Nature" className="parallax-img" loading="lazy" />
+                    <div className="cell-overlay gradient-teal" />
+                    <span className="cell-badge teal">IMPACT</span>
+                </div>
+
                 {/* Quote Cell */}
                 <div className="bento-cell cell-quote">
                     <blockquote>
@@ -72,12 +105,6 @@ export default function Philosophy() {
                         <span className="badge-title">Curated Impact</span>
                         <span className="badge-subtitle">TOP 1% SELECTION</span>
                     </div>
-                </div>
-
-                {/* Community Hands Cell */}
-                <div className="bento-cell cell-community">
-                    <img src="/community.png" alt="Community" loading="lazy" />
-                    <div className="cell-overlay" />
                 </div>
             </div>
         </section>
